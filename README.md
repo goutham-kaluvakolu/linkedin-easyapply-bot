@@ -2,3 +2,6 @@ get chromedriver using https://storage.googleapis.com/chrome-for-testing-public/
 
 
 tutorial on selenium https://www.youtube.com/watch?v=NB8OceGZGjA
+
+
+edit configs with your details
