@@ -5,3 +5,8 @@ tutorial on selenium https://www.youtube.com/watch?v=NB8OceGZGjA
 
 
 edit configs with your details
+
+
+todos:
+
+- should handle dropdowns, radio buttons in aditional details page 
