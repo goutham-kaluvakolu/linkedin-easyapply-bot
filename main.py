@@ -25,6 +25,7 @@ try:
     # Authenticate user from config
     auth_page = AuthPage(driver)
     auth_page.authenticate()
+    time.sleep(20)
     landing_page = LandingPage(driver)
     jobs_page = JobsPage(driver)
 

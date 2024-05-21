@@ -39,7 +39,7 @@ class JobsPage:
             for i in range(1, 5):
                 x = f"(//ul[contains(@class, 'scaffold-layout__list-container')]//li[{i}]//div[contains(@class, 'job-card-container--clickable')])[1]"
                 job_element = WebDriverWait(self.driver, 10).until(
-                    EC.element_to_be_clickable((By.XPATH, x))
+                    EC.presence_of_element_located((By.XPATH, x))
                 )
                 
                 # Click on the job element
@@ -76,8 +76,7 @@ class JobsPage:
 
         try:
             button = WebDriverWait(self.driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, "//button[@aria-label='Continue to next step']"))
-
+                EC.presence_of_element_located((By.XPATH, "(//button[contains(@class, 'jobs-apply-button')])[1]"))
             )
             print("here",button)
             button.click()
@@ -86,30 +85,31 @@ class JobsPage:
 
             while currentbutton!="submit":
                 print("currentbutton",currentbutton)
-                form = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "form")))
+                form = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[contains(@class, 'jobs-easy-apply-content')]//form")))
                 # Find the h3 element within the form
                 h3_element = form.find_element(By.TAG_NAME, "h3")
                 section_text = h3_element.text.strip().lower()
+                print(section_text,"section_text",h3_element,form)
                 if "contact info" in section_text:
             # Click on the Next button for personal section
                     next_button = WebDriverWait(self.driver, 10).until(
                 EC.element_to_be_clickable((By.XPATH, "//button[@aria-label='Continue to next step']"))
 
             )
-                    time(2)
-                    print(next_button,"contact info",section_text)
+                    time.sleep(2)
+                    print("***********",section_text)
 
                     next_button.click()
-                    time(2)
+                    time.sleep(2)
 
                 elif "resume" in section_text:
                     # Click on the Next button for resume section
                     next_button = WebDriverWait(self.driver, 10).until(
                 EC.element_to_be_clickable((By.XPATH, "//button[@aria-label='Continue to next step']"))
             )
-                    time(2)
+                    time.sleep(2)
                     next_button.click()
-                    time(2)
+                    time.sleep(2)
 
                 elif "work authorization" in section_text:
                     # Click on the Review button for work auth section
@@ -128,25 +128,23 @@ class JobsPage:
                     break
                     # Exit the script or further action
                 elif "additional questions" in section_text:
-                    time(2)
+                    time.sleep(2)
 
                     # Fill out the form and click Next for the add section
                     # Assuming you have fields to fill and then proceed
-                    form = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "form")))
-                    input_fields = form.find_elements(By.TAG_NAME, "input")
+                    input_fields = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH, "//div[contains(@class, 'jobs-easy-apply-content')]//form//input[@required]")))
+
                     for field in input_fields:
-                        print(field.get_attribute("required"),"field.get_attribute('required')")
-                        if "required" in field.get_attribute("required"):
-                            # Enter "2" into the required input field
-                            field.send_keys("2")
-                    time(2)
-
-                    next_button = WebDriverWait(self.driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, "//button[@aria-label='Continue to next step']"))
-            )
-
-                    next_button.click()
-                    time(2)
+                        field.send_keys("2")
+                    time.sleep(2)
+                    review = self.driver.find_elements(By.XPATH, "//button[@aria-label='Review your application']")
+                    if review:
+                        review.click()
+                    else:
+                        next_button = WebDriverWait(self.driver, 10).until(
+                EC.element_to_be_clickable((By.XPATH, "//button[@aria-label='Continue to next step']")))
+                        next_button.click()
+                        time.sleep(2)
 
                 else:
                     print("Section not recognized")
